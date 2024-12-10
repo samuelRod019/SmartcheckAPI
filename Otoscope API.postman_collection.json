@@ -1,0 +1,2551 @@
+{
+	"info": {
+		"_postman_id": "161b2ca2-ae29-477b-897e-86a2547e5161",
+		"name": "Otoscope API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38328634",
+		"_collection_link": "https://tylenol-api.postman.co/workspace/Tylenol-API-Workspace~b22b8508-194c-461c-8032-ec8caa03d24c/collection/39223457-161b2ca2-ae29-477b-897e-86a2547e5161?action=share&source=collection_link&creator=38328634"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Register - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['id','firstName','lastName','email','surveys','accessToken','refreshToken'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['id','firstName','lastName','email','surveys','accessToken','refreshToken'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the JSON data**//",
+									"const propertyData =['email', 'firstName', 'lastName']",
+									"validateJSONData(propertyData)",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys recording complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.recording.complete).to.be.true;",
+									"});",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys sharing complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.sharing.complete).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"    let emailTemplate = `s@1.com{{randomPhoneNumber}}`;\r",
+									"\r",
+									"    function getRandomPhoneNumber() {\r",
+									"       let numStr = '';\r",
+									"       for (let i = 0; i < 10; i++) {\r",
+									"           numStr += Math.floor(Math.random() * 10); \r",
+									"       }\r",
+									"       return numStr;\r",
+									"    }\r",
+									"\r",
+									"    //**Get a new random phone number**//\r",
+									"    const randomPhoneNumber = getRandomPhoneNumber();\r",
+									"\r",
+									"    const finalEmailWithPhoneNumber = emailTemplate.replace('{{randomPhoneNumber}}', randomPhoneNumber);\r",
+									"\r",
+									"    console.log(`Generated Email with Phone Number: ${finalEmailWithPhoneNumber}`);\r",
+									"\r",
+									"    pm.environment.set(\"email\", finalEmailWithPhoneNumber)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"firstName\": \"{{firstName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"password\": \"{{loginPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Register - existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateStatusCode(pm.response.code)\r",
+									"\r",
+									"//**Test to verify the JSON properties**//\r",
+									"const requiredProperties = ['message'];\r",
+									"validateJSONProperties(requiredProperties)\r",
+									"\r",
+									"//**Test to verify the data type of the response**//\r",
+									"const dataTypeValues = ['message'];\r",
+									"validateDataType(dataTypeValues)\r",
+									"\r",
+									"//**Test to verify the message content **//\r",
+									"const message = \"This email address is already associated with a SmartCheck® account.\"\r",
+									"validateMessage(message)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"email\", \"ttest@213.coom\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\",\r\n    \"password\": \"{{loginPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/register"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"//**Function to set environment variable**//\r",
+							"function setEnvironmentVariables(variables) {\r",
+							"    Object.entries(variables).forEach(([key, value]) => {\r",
+							"        pm.environment.set(key, value);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"const variables = {\r",
+							"    \"firstName\": \"First\",\r",
+							"    \"lastName\": \"Last\"\r",
+							"};\r",
+							"\r",
+							"setEnvironmentVariables(variables);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"//**Conditon to set the token values**//\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"if (jsonData && jsonData.accessToken) {\r",
+							"    pm.environment.set(\"accessToken\", jsonData.accessToken);\r",
+							"    pm.environment.set(\"refreshToken\", jsonData.refreshToken);\r",
+							"}"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Successful login - Valid Credentials",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['id','firstName','lastName','email','surveys','accessToken','refreshToken'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['id','firstName','lastName','email','surveys','accessToken','refreshToken'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the JSON data**//",
+									"const propertyData =['email','firstName', 'lastName']",
+									"validateJSONData(propertyData)",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys recording complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.recording.complete).to.be.true;",
+									"});",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys sharing complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.sharing.complete).to.be.true;",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{loginPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Failed Login - Invalid Email",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"The email and/or password you entered doesn't match our records. Please try again.\"",
+									"validateMessage(message)",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: The email and/or password you entered doesn't match our records. Please try again.\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at authenticate (/var/task/api/controllers/auth.js:174:11)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{loginPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Failed Login - Invalid Password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"The email and/or password you entered doesn't match our records. Please try again.\"",
+									"validateMessage(message)",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: The email and/or password you entered doesn't match our records. Please try again.\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at authenticate (/var/task/api/controllers/auth.js:174:11)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Failed Login - Empty Credentials",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"Your account has been temporarily locked. Please try again in 15 minutes.\"",
+									"validateMessage(message)",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: Your account has been temporarily locked. Please try again in 15 minutes.\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at authenticate (/var/task/api/controllers/auth.js:168:11)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"\",\n    \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/login"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"//***Script to set the login details ***//\r",
+							"\r",
+							"//pm.environment.set(\"email\", \"s@1.com6245899198\")"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Get Profile",
+			"item": [
+				{
+					"name": "Get Profile - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['id','firstName','lastName','email','surveys'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['id','firstName','lastName','email','surveys'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the JSON data**//",
+									"const propertyData =['email', 'firstName', 'lastName']",
+									"validateJSONData(propertyData)",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys recording complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.recording.complete).to.be.true;",
+									"});",
+									"",
+									"//**Test to verify the status is true**//",
+									"pm.test(\"Surveys sharing complete status is true\", function () {",
+									"    pm.expect(jsonData.surveys.sharing.complete).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile - unauthorized invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateInvalidStatusCode()\r",
+									"\r",
+									"//**Test to verify the data type of the response**//\r",
+									"const dataTypeValues = ['message'];\r",
+									"validateDataType(dataTypeValues)\r",
+									"\r",
+									"//**Test to verify the JSON properties**//\r",
+									"const requiredProperties = ['message'];\r",
+									"validateJSONProperties(requiredProperties)\r",
+									"\r",
+									"//**Test to verify the message content **//\r",
+									"const message = \"You are not authorized\"\r",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRmMDVhZDE3LWI1MTUtNDdmNy05ZDA5LTU2MGZiN2M2NTg0ZiIsImFjY2Vzc1Rva2VuIjoiYno3YmNqOGJxOXQ0ZnQ3ZCIsImlhdCI6MTczMDE5ODA5NSwiZXhwIjoxNzMwMjAxNjM1fQ.JKi8mkg2uhr5zWWYrKBH0pDp38RbRMTFq_mza0QU7",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile - unauthorized missing token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateInvalidStatusCode()\r",
+									"\r",
+									"//**Test to verify the data type of the response**//\r",
+									"const dataTypeValues = ['message'];\r",
+									"validateDataType(dataTypeValues)\r",
+									"\r",
+									"//**Test to verify the JSON properties**//\r",
+									"const requiredProperties = ['message'];\r",
+									"validateJSONProperties(requiredProperties)\r",
+									"\r",
+									"//**Test to verify the message content **//\r",
+									"const message = \"You are not authorized\"\r",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrl}}/user/profile"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forgot Password",
+			"item": [
+				{
+					"name": "Forgot Password - Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['status'];",
+									"validateDataType(dataTypeValues)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"appUri\" : \"{{appUri}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/forgotPassword"
+					},
+					"response": [
+						{
+							"name": "Forgot Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"sample@mail-test.xena.dev\",\n    \"appUri\" : \"otoscope\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/forgotPassword"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 17 Mar 2021 01:03:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "14"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"e-QlsUp1vTYvBgYHrHCBYe2n/q268\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot Password - invalid email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateInvalidStatusCode()\r",
+									"\r",
+									"//**Test to verify the JSON properties**//\r",
+									"const requiredProperties = ['message','stack'];\r",
+									"validateJSONProperties(requiredProperties)\r",
+									"\r",
+									"//**Test to verify the data type of the response**//\r",
+									"const dataTypeValues = ['message','stack'];\r",
+									"validateDataType(dataTypeValues)\r",
+									"\r",
+									"//**Test to verify the message content **//\r",
+									"const message = \"Oops! Something went wrong. Please try again.\"\r",
+									"validateMessage(message)\r",
+									"\r",
+									"//**Test to verify the stack array**//\r",
+									"pm.test(\"Stack array is correct\", function() {\r",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);\r",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: Oops! Something went wrong. Please try again.\");\r",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at forgotPassword (/var/task/api/controllers/auth.js:49:15)\");\r",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"\",\r\n    \"appUri\" : \"{{appUri}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/forgotPassword"
+					},
+					"response": [
+						{
+							"name": "Forgot Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"sample@mail-test.xena.dev\",\n    \"appUri\" : \"otoscope\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/forgotPassword"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 17 Mar 2021 01:03:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "14"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"e-QlsUp1vTYvBgYHrHCBYe2n/q268\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.environment.set(\"appUri\", \"otoscope\")\r",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Update Profile",
+			"item": [
+				{
+					"name": "Update Profile - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['status'];",
+									"validateDataType(dataTypeValues)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"{{firstName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"email\": \"{{email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile - unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"You are not authorized\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRmMDVhZDE3LWI1MTUtNDdmNy05ZDA5LTU2MGZiN2M2NTg0ZiIsImFjY2Vzc1Rva2VuIjoidWY4YWVzcXRjczVxbnRudCIsImlhdCI6MTczMDc5NzA4OSwiZXhwIjoxNzMwODAwNjI5fQ.ULaoFQpW9tr7iM8IS-P0YxqlqOz5NCLFLtTQe2uxpIcaaaa",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"firstName\": \"{{firstName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"email\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/profile"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"//**Function to set environment variable**//\r",
+							"function setEnvironmentVariables(variables) {\r",
+							"    Object.entries(variables).forEach(([key, value]) => {\r",
+							"        pm.environment.set(key, value);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"const variables = {\r",
+							"    \"firstName\": \"First3\",\r",
+							"    \"lastName\": \"Last3\"\r",
+							"};\r",
+							"\r",
+							"setEnvironmentVariables(variables);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Update Password",
+			"item": [
+				{
+					"name": "Update Password - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//**Function to generate a random new password **/\r",
+									"function generateRandomPassword(length = 12) {\r",
+									"  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"  let password = '';\r",
+									"\r",
+									"  for (let i = 0; i < length; i++) {\r",
+									"    const randomIndex = Math.floor(Math.random() * chars.length);\r",
+									"    password += chars[randomIndex];\r",
+									"  }\r",
+									"\r",
+									"  return password;\r",
+									"}\r",
+									"\r",
+									"//**Get a new random phone number**//\r",
+									"const randomPassword = generateRandomPassword(8);\r",
+									"\r",
+									"pm.environment.set(\"newPassword\", randomPassword)\r",
+									"pm.environment.set(\"newPasswordConfirm\", randomPassword)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"{{loginPassword}}\",\n    \"newPassword\": \"{{newPassword}}\",\n    \"newPasswordConfirm\": \"{{newPasswordConfirm}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password - same new password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"New password cannot be previous 5 passwords\"",
+									"validateMessage(message)",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(4);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: New password cannot be previous 5 passwords\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at appendPasswordHash (/var/task/api/lib/passwordHashes.js:10:19)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at updatePassword (/var/task/api/controllers/user.js:71:23)\");",
+									"    pm.expect(jsonData.stack[3]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"{{loginPassword}}\",\n    \"newPassword\": \"{{newPassword}}\",\n    \"newPasswordConfirm\": \"{{newPasswordConfirm}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password - invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"Old password does not match\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"{{loginPassword}}\",\n    \"newPassword\": \"{{$randomPassword}}\",\n    \"newPasswordConfirm\": \"{{$randomPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password - weak password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"Oops! Something went wrong. Please try again.\"",
+									"validateMessage(message)",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: Oops! Something went wrong. Please try again.\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at updatePassword (/var/task/api/controllers/user.js:92:15)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"\",\n    \"newPassword\": \"\",\n    \"newPasswordConfirm\": \"{{newPasswordConfirm}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Refresh Tokens",
+			"item": [
+				{
+					"name": "Refresh Tokens - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['accessToken','refreshToken'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['accessToken','refreshToken'];",
+									"validateDataType(dataTypeValues)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\" : \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/refreshToken"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete User",
+			"item": [
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateStatusCode(pm.response.code)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUrl}}/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "App Status",
+			"item": [
+				{
+					"name": "App Status - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//**Test to verify the response time**//\r",
+									"validateResponsetime()\r",
+									"\r",
+									"//**Test to verify the status code**//\r",
+									"validateStatusCode(pm.response.code)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//**Function to set environment variable**//\r",
+									"function setEnvironmentVariables(variables) {\r",
+									"    Object.entries(variables).forEach(([key, value]) => {\r",
+									"        pm.environment.set(key, value);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"const variables = {\r",
+									"    \"appVersion\": \"3.1.0\",\r",
+									"    \"os\": \"iOS\",\r",
+									"    \"osVersion\": \"16.2\",\r",
+									"    \"appBuildNumber\": \"249\"\r",
+									"};\r",
+									"\r",
+									"setEnvironmentVariables(variables);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appVersion\": \"{{appVersion}}\",\n    \"os\": \"{{os}}\",\n    \"osVersion\": \"{{osVersion}}\",\n    \"appBuildNumber\": \"{{appBuildNumber}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/appStatus"
+					},
+					"response": []
+				},
+				{
+					"name": "App Status - invalid app version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"validateInvalidStatusCode()\r",
+									"\r",
+									"\r",
+									"pm.test(\"Message is valid\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('message').that.is.not.empty;\r",
+									"    pm.expect(jsonData).to.have.property('stack').that.is.not.empty;\r",
+									"    pm.expect(pm.response.text()).to.include(\"invalid semantic app version\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//**Function to set environment variable**//\r",
+									"function setEnvironmentVariables(variables) {\r",
+									"    Object.entries(variables).forEach(([key, value]) => {\r",
+									"        pm.environment.set(key, value);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"const variables = {\r",
+									"    \"appVersion\": \"123\",\r",
+									"    \"os\": \"iOS\",\r",
+									"    \"osVersion\": \"16.2\",\r",
+									"    \"appBuildNumber\": \"249\"\r",
+									"};\r",
+									"\r",
+									"setEnvironmentVariables(variables);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appVersion\": \"{{appVersion}}\",\n    \"os\": \"{{os}}\",\n    \"osVersion\": \"{{osVersion}}\",\n    \"appBuildNumber\": \"{{appBuildNumber}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/appStatus"
+					},
+					"response": []
+				},
+				{
+					"name": "App Status - invalid OS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('status 400', () => pm.response.to.have.status(400))\r",
+									"\r",
+									"pm.test(\"Message is valid\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('message').that.is.not.empty;\r",
+									"    pm.expect(jsonData).to.have.property('stack').that.is.not.empty;\r",
+									"    pm.expect(pm.response.text()).to.include(\"platform not supported\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"appVersion\": \"1.2.3\",\n    \"os\": \"aaaos\",\n    \"osVersion\": \"16.2\",\n    \"appBuildNumber\": \"249\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/appStatus"
+					},
+					"response": []
+				},
+				{
+					"name": "App Status - invalid OS version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('status 400', () => pm.response.to.have.status(400))\r",
+									"\r",
+									"pm.test(\"Message is valid\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('message').that.is.not.empty;\r",
+									"    pm.expect(jsonData).to.have.property('stack').that.is.not.empty;\r",
+									"    pm.expect(pm.response.text()).to.include(\"invalid semantic version for osVersion\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appVersion\": \"1.2.3\",\r\n    \"os\": \"iOS\",\r\n    \"osVersion\": \"1\",\r\n    \"appBuildNumber\": \"249\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/appStatus"
+					},
+					"response": []
+				},
+				{
+					"name": "App Status - invalid build",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('status 209', () => pm.response.to.have.status(209))\r",
+									"\r",
+									"pm.test(\"Message is valid\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('title');\r",
+									"    pm.expect(jsonData).to.have.property('subtitle').that.is.not.empty;\r",
+									"    pm.expect(jsonData).to.have.property('code');\r",
+									"    pm.expect(jsonData).to.have.property('actionTitle');\r",
+									"    pm.expect(pm.response.text()).to.include(\"This version of the app is no longer available.\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appVersion\": \"1.2.3\",\r\n    \"os\": \"iOS\",\r\n    \"osVersion\": \"16.2\",\r\n    \"appBuildNumber\": \"24.3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/appStatus"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supported Devices",
+			"item": [
+				{
+					"name": "Supported Device - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" const jsonData = pm.response.json();",
+									" ",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['name','distanceFromRightInMillimeters','distanceFromTopInMillimeters','pixelsPerInch'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['name','distanceFromRightInMillimeters','distanceFromTopInMillimeters','pixelsPerInch','showDevicePositionPopup'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"pm.test(\"ShowDevicePositionPopup is true\", function () {",
+									"   pm.expect(jsonData.showDevicePositionPopup).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/device?id=iPhone9,1&appVersion=3.1.0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "iPhone9,1"
+								},
+								{
+									"key": "appVersion",
+									"value": "3.1.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supported Device - unsupported device",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"Device not supported\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/device?id=iPhone2,1&appVersion=3.1.0",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "iPhone2,1"
+								},
+								{
+									"key": "appVersion",
+									"value": "3.1.0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Telemed",
+			"item": [
+				{
+					"name": "Telemed - valid",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)",
+									"",
+									"pm.test(\"Providers array exists and has correct length\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.providers).to.be.an('array').that.has.lengthOf(3);",
+									"});",
+									"",
+									"//**Test to validate Each provider has required fields with correct data types **//",
+									"var expectedProperties = [",
+									"        { name: 'type', type: 'string' },",
+									"        { name: 'name', type: 'string' },",
+									"        { name: 'sortIndex', type: 'number' },",
+									"        { name: 'visible', type: 'boolean' },",
+									"        { name: 'legalName', type: 'string' },",
+									"        { name: 'timeAvailability', type: 'string' },",
+									"        { name: 'locationAvailability', type: 'string' },",
+									"        { name: 'about', type: 'string' },",
+									"        { name: 'packageId', type: 'string' },",
+									"        { name: 'urlScheme', type: 'string' },",
+									"        { name: 'appStoreLink', type: 'string' },",
+									"        { name: 'howDoesItWork', type: 'array' },",
+									"        { name: 'saveTitle', type: 'string' },",
+									"        { name: 'saveInstructions', type: 'array' },",
+									"        { name: 'termsAndConditionsTitle', type: 'string' },",
+									"        { name: 'termsAndConditions', type: 'array' },",
+									"        { name: 'termsAndConditionsCTA', type: 'string' },",
+									"        { name: 'webLink', type: 'string' },",
+									"        { name: 'logo', type: 'string' }",
+									"    ];",
+									"validateProviderFieldsAndDatatype(expectedProperties)",
+									"",
+									"//**Test to validate Each provider details**//",
+									"validateProviderDetails(\"Amwell®\",\"provider\",79)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/telemed"
+					},
+					"response": []
+				},
+				{
+					"name": "Telemed - valid Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('status', () => pm.response.to.have.status(200))",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/telemed"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forgot Password Redirects",
+			"item": [
+				{
+					"name": "Forgot Password Redirect/Jump",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 302\", function () {",
+									"    pm.response.to.have.status(302);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/forgotpassword/redir/otodev?code=g8hfyxwwtm3www",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"forgotpassword",
+								"redir",
+								"otodev"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "g8hfyxwwtm3www"
+								}
+							]
+						},
+						"description": "This is needed so that the link in the forgot-password email opens up the mobile app. We can't set the password recovery link to a custom scheme like \"otodev://pass/recover\". This solves that problem"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Redirect/Jump - invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"validateInvalidStatusCode()",
+									"",
+									"const dataTypeValues = ['message','request_id'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"const message = \"no Route matched with those values\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/forgotpassword/redir/otodev?code=23541",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"forgotpassword",
+								"redir",
+								"otodev"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "23541"
+								}
+							]
+						},
+						"description": "This is needed so that the link in the forgot-password email opens up the mobile app. We can't set the password recovery link to a custom scheme like \"otodev://pass/recover\". This solves that problem"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Password Recovery",
+			"item": [
+				{
+					"name": "Forgot Password Recover",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the status code**//",
+									"validateStatusCode(pm.response.code)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resetToken\": \"9y6uw3eqqa4bjh\",\n    \"newPassword\": \"Password2111\",\n    \"newPasswordConfirm\": \"Password2111\",\n    \"appUri\": \"smartchecksit?tokenExpiration=2024-11-13T09%3A30%3A02.705Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password/recover"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Recover - mismatch password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"validateInvalidStatusCode()",
+									"",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"const message = \"Oops! Something went wrong. Please try again.\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resetToken\": \"patdaecmnv9s2u\",\n    \"newPassword\": \"Password111\",\n    \"newPasswordConfirm\": \"Password211\",\n    \"appUri\": \"smartchecksit?tokenExpiration=2024-11-13T09%3A47%3A42.690Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password/recover"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Recover - invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"validateInvalidStatusCode()",
+									"",
+									"const dataTypeValues = ['message'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"const message = \"This password reset link has expired.\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resetToken\": \"6gezaaaabqwkd6qfmqa\",\n    \"newPassword\": \"Password211\",\n    \"newPasswordConfirm\": \"Password211\",\n    \"appUri\": \"otoscope?tokenExpiration=2024-11-12T11%3A00%3A26.142Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password/recover"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Recover  - expired",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"validateInvalidStatusCode()",
+									"",
+									"const dataTypeValues = ['message'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"const message = \"This password reset link has expired.\"",
+									"validateMessage(message)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resetToken\": \"ac9nj8u9swj5fa\",\n    \"newPassword\": \"Password211\",\n    \"newPasswordConfirm\": \"Password211\",\n    \"appUri\": \"smartcheckdev?tokenExpiration=2021-10-07T20%3A47%3A00.705Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/user/password/recover"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Log In Session",
+			"item": [
+				{
+					"name": "Session Logging URLs - valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('status', () => pm.response.to.have.status(200))",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Test data type of the response\", () => {",
+									"  pm.expect(jsonData).to.be.an(\"object\");",
+									"  pm.expect(jsonData.video).to.be.a(\"string\");",
+									"  pm.expect(jsonData.data).to.be.a(\"string\");",
+									"});",
+									"",
+									"if ( jsonData ) {",
+									"    pm.environment.set(\"s3_video_upload_url\", jsonData.video);",
+									"    pm.environment.set(\"s3_data_upload_url\", jsonData.data);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/session/logging?data=s3_video_upload_url",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"session",
+								"logging"
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "s3_video_upload_url"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Session Logging URLs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/session/logging?data=<sample>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"session",
+										"logging"
+									],
+									"query": [
+										{
+											"key": "data",
+											"value": "<sample>"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 17 Mar 2021 01:04:29 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "890"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"37a-9IlOai05R8h29RXTixMB0P/9b7U\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"video\": \"https://otoscope-videos-dev.s3.us-east-2.amazonaws.com/1fda03d1-2e5c-4dd5-9ae8-d9e7755c1739/video.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA375DZLQIRWHT2TFA%2F20210317%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210317T010429Z&X-Amz-Expires=900&X-Amz-Signature=08ede1e2a028a768bcf8a8b07af123a64600ae264fff1114ad80a3d7733b42ee&X-Amz-SignedHeaders=host%3Bx-amz-server-side-encryption&x-amz-server-side-encryption=AES256\",\n    \"data\": \"https://otoscope-videos-dev.s3.us-east-2.amazonaws.com/1fda03d1-2e5c-4dd5-9ae8-d9e7755c1739/data.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA375DZLQIRWHT2TFA%2F20210317%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20210317T010429Z&X-Amz-Expires=900&X-Amz-Signature=c649e5e27fc5c468dc14b6ac9cfa0bbcc17bb65ed354dd71b5ab7fd1c02dbfa3&X-Amz-SignedHeaders=host%3Bx-amz-server-side-encryption&x-amz-server-side-encryption=AES256\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Session Logging URLs - invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"//**Test to verify the response time**//",
+									"validateResponsetime()",
+									"",
+									"//**Test to verify the status code**//",
+									"validateInvalidStatusCode()",
+									"",
+									"//**Test to verify the JSON properties**//",
+									"const requiredProperties = ['message','stack'];",
+									"validateJSONProperties(requiredProperties)",
+									"",
+									"//**Test to verify the data type of the response**//",
+									"const dataTypeValues = ['message','stack'];",
+									"validateDataType(dataTypeValues)",
+									"",
+									"//**Test to verify the message content **//",
+									"const message = \"Invalid upload request\"",
+									"validateMessage(message)",
+									"",
+									"pm.test(\"Stack is present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('stack').that.is.not.empty;",
+									"});",
+									"",
+									"//**Test to verify the stack array**//",
+									"pm.test(\"Stack array is correct\", function() {",
+									"    pm.expect(jsonData.stack).to.be.an('array').that.has.lengthOf(3);",
+									"    pm.expect(jsonData.stack[0]).to.equal(\"Error: Invalid upload request\");",
+									"    pm.expect(jsonData.stack[1]).to.include(\"at sessionUploadURLs (/var/task/api/controllers/sessionLogger.js:52:16)\");",
+									"    pm.expect(jsonData.stack[2]).to.include(\"at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/session/logging?data=<sample>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"session",
+								"logging"
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "<sample>"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "{{x-api-key}}",
+			"key": "x-api-key"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//***Pre-Requests***//\r",
+					"\r",
+					"//***Set and generate Timestamp***//\r",
+					"pm.environment.set(\"timestamp\", new Date().getTime());\r",
+					"\r",
+					"\r",
+					"\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//***Utils***//\r",
+					" const jsonData = pm.response.json();\r",
+					"//**Function to verify the response time**//\r",
+					"validateResponsetime =()=>\r",
+					"    pm.test(\"Response time is less than 8s\", () => {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(8000);\r",
+					"    });\r",
+					"\r",
+					"//**Function to verify valid status code**//\r",
+					"validateStatusCode = (status) => {\r",
+					"    if (status == 200) {\r",
+					"        pm.test(\"The Status code is 200 as expected\", function () {});\r",
+					"    } else if (status == 400) {\r",
+					"        pm.test(\"The Status code is 400 as expected\", function () {\r",
+					"            var jsonData = pm.response.json();\r",
+					"            pm.expect(jsonData.status).to.eql(status);\r",
+					"        });\r",
+					"    } else if (status == 390) {\r",
+					"        pm.test(\"The Status code is 390 as expected\", function () {\r",
+					"            pm.response.to.have.status(status)\r",
+					"        });\r",
+					"    }\r",
+					"};\r",
+					"\r",
+					"//**Function to verify invalid status code**//\r",
+					"validateInvalidStatusCode = () => { \r",
+					"    pm.test(\"Status code is \"+pm.response.code, function() \r",
+					"    { \r",
+					"        pm.expect(pm.response.code).to.be.oneOf([401, 400, 413, 404, 422]);\r",
+					"    }); \r",
+					"};\r",
+					"\r",
+					"//**Function to verify the properties of JSON content**//\r",
+					"validateJSONProperties = (properties) => {\r",
+					"    pm.test(\"JSON Property is valid and not empty\", function () {\r",
+					"        \r",
+					"        // Function to check if required properties exist\r",
+					"        const checkRequiredProperties = (data, properties) => {\r",
+					"            properties.forEach(property => {\r",
+					"                pm.expect(data).to.have.property(property)\r",
+					"\r",
+					"                const value = data[property];\r",
+					"                \r",
+					"                if (typeof value === 'string') {\r",
+					"                    pm.expect(value).to.not.be.empty;\r",
+					"                } else if (typeof value === 'number') {\r",
+					"                    pm.expect(value).to.not.be.null.and.not.be.undefined;\r",
+					"                } else if (Array.isArray(value)) {\r",
+					"                    pm.expect(value).to.not.be.empty;\r",
+					"                } else if (typeof value === 'object' && value !== null) {\r",
+					"                    pm.expect(Object.keys(value)).to.not.be.empty;\r",
+					"                } else {\r",
+					"                    pm.expect(value).to.exist;\r",
+					"                }\r",
+					"                console.log(\"Property: \" +property+ \" is expected and not empty\");\r",
+					"            });\r",
+					"        };\r",
+					"        checkRequiredProperties(jsonData, properties);\r",
+					"    });\r",
+					"};\r",
+					"\r",
+					"//**Function to verify the data of JSON content**//\r",
+					"validateJSONData = (propertyData) => {\r",
+					"    pm.test(\"JSON Data is valid\", function () {\r",
+					"        \r",
+					"        const checkPropertyData = (data, propertyData) => {\r",
+					"            propertyData.forEach(property => {\r",
+					"                if(property=='email'){                          //Code can be modifeid based on the properties using elseif\r",
+					"                const email = pm.environment.get(\"email\")\r",
+					"                pm.expect(data).to.have.property(property, email);\r",
+					"                console.log(\"Email: \" +email+ \" is expected\")  \r",
+					"                }\r",
+					"                else if(property=='firstName'){                         \r",
+					"                const firstName = pm.environment.get(\"firstName\")\r",
+					"                pm.expect(data).to.have.property(property, firstName);\r",
+					"                console.log(\"FirstName: \" +firstName+ \" is expected\")  \r",
+					"                }\r",
+					"                else if(property=='lastName'){                         \r",
+					"                const lastName = pm.environment.get(\"lastName\")\r",
+					"                pm.expect(data).to.have.property(property, lastName);\r",
+					"                console.log(\"LastName: \" +lastName+ \" is expected\")  \r",
+					"                }\r",
+					"            });\r",
+					"        };\r",
+					"        checkPropertyData(jsonData, propertyData);\r",
+					"    });\r",
+					"};\r",
+					"\r",
+					"//**Function to verify the data types**//\r",
+					"validateDataType = (datatypes) =>{\r",
+					"    pm.test(\"Data type of response is valid\", () => {\r",
+					"        pm.expect(jsonData).to.be.an(\"object\");\r",
+					"        console.log(\"jsonData is an object\");\r",
+					"        const dataType = (datatypes) => {\r",
+					"            datatypes.forEach(datatype => {\r",
+					"                if(datatype=='status'|| datatype== 'distanceFromRightInMillimeters' || datatype== 'distanceFromTopInMillimeters' || datatype=='pixelsPerInch'){\r",
+					"                    pm.expect(jsonData[datatype]).to.be.a(\"number\");\r",
+					"                    console.log(\"Datatype: \" + datatype+ \" is a number\");\r",
+					"                } else if(datatype=='stack'){\r",
+					"                    pm.expect(jsonData[datatype]).to.be.a(\"array\");\r",
+					"                    console.log(\"Datatype: \" + datatype+ \" is an array\");\r",
+					"                } else if(datatype=='surveys'){\r",
+					"                    pm.expect(jsonData[datatype]).to.be.a(\"object\");\r",
+					"                    console.log(\"Datatype: \" + datatype+ \" is an object\");\r",
+					"                } else {\r",
+					"                pm.expect(jsonData[datatype]).to.be.a(\"string\");   //Code can be modifeid based on assertions eg. strng, object\r",
+					"                console.log(\"Datatype: \" + datatype+ \" is a string\");\r",
+					"                }\r",
+					"            });\r",
+					"            \r",
+					"        };\r",
+					"        dataType(datatypes);\r",
+					"    });            \r",
+					"};\r",
+					"\r",
+					"//**Function to verify the message**//\r",
+					"validateMessage = (message) =>{\r",
+					"    pm.test(\"Message is valid\", function () {\r",
+					"    pm.expect(pm.response.text()).to.include(message);\r",
+					"    console.log(\"Message: [\" +message+ \"] is expected\");\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"//** Function to verify provider details **//\r",
+					"validateProviderFieldsAndDatatype = (expectedProperties) => {\r",
+					"    pm.test(\"Each provider has required fields with correct data types\", function () {\r",
+					"        var jsonData = pm.response.json();\r",
+					"        jsonData.providers.forEach(function(provider) {\r",
+					"            expectedProperties.forEach(function(prop) {\r",
+					"                pm.expect(provider).to.have.property(prop.name).that.is.a(prop.type);\r",
+					"                console.log('Each provider has property name: '+prop.name+ ' and property type '+prop.type)\r",
+					"            });\r",
+					"\r",
+					"            if (provider.type === 'provider') {\r",
+					"                pm.expect(provider).to.have.property('visitCost').that.is.a('number');\r",
+					"            } else {\r",
+					"                pm.expect(provider).to.have.property('visitCost').that.is.null;\r",
+					"            }\r",
+					"        });\r",
+					"    });\r",
+					"};\r",
+					"\r",
+					"//**Function to verify the provider details**//\r",
+					"validateProviderDetails = (providername,type,visitcost) =>{\r",
+					"        pm.test(providername+\" provider has correct details\", function () {\r",
+					"        var jsonData = pm.response.json();\r",
+					"        var amwell = jsonData.providers.find(p => p.name === providername);\r",
+					"        pm.expect(amwell).to.not.be.undefined;\r",
+					"        pm.expect(amwell.type).to.equal(type);\r",
+					"        pm.expect(amwell.visible).to.be.true;\r",
+					"        pm.expect(amwell.visitCost).to.equal(visitcost);\r",
+					"    });\r",
+					"}"
+				]
+			}
+		}
+	]
+}
